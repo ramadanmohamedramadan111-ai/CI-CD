@@ -10,11 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Code
-        uses: actions/checkout@v4
 
       - name: Print Message
         run: echo "CI/CD Working"
 
-      - name: Read File
-        run: cat hello.txt
