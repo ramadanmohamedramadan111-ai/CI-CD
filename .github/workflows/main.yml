@@ -1,21 +1,20 @@
 name: My First Pipeline
 
 env:
-  RAMADAN_NAME: "ramadan"
-  RAMADAN_AGE: 23
+  CREATE_ISSUE_API: ${{ vars.CREATE_ISSUE_API }}
 
 on:
   push:
     branches:
       - master
 
-# إعطاء الـ Token صلاحية كتابة الـ Issues
 permissions:
   issues: write
 
 jobs:
   hello:
     runs-on: ubuntu-latest
+
     steps:
       - name: Print Message
         run: echo "CI/CD Working"
@@ -33,5 +32,5 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://github.com{{ github.repository }}/issues \
-            -d '{"title":"Pipeline Failed: My First Pipeline","body":"The workflow failed during execution. Please check the logs.","labels":["bug"]}'
+            $CREATE_ISSUE_API \
+            -d '{"title":"Pipeline Failed","body":"Workflow failed.","labels":["bug"]}'
