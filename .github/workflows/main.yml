@@ -1,27 +1,43 @@
 name: My First Pipeline
 
-env:
-  CREATE_ISSUE_API: ${{ vars.CREATE_ISSUE_API }}
-
 on:
   push:
     branches:
       - master
 
+env:
+  CREATE_ISSUE_API: ${{ vars.CREATE_ISSUE_API }}
+
 permissions:
   issues: write
 
 jobs:
-  hello:
+
+  # =========================
+  # BUILD JOB
+  # =========================
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Message
-        run: echo "CI/CD Working"
-
-      - name: Simulate Failure
+      - name: Build Step
         run: |
-          echo "Simulating an error..."
+          echo "Building project..."
+          echo "Build Success"
+
+  # =========================
+  # TEST JOB
+  # =========================
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test Step
+        run: |
+          echo "Running Tests..."
+
+          # نجرب failure
           exit 1
 
       - name: Create GitHub Issue on Failure
@@ -33,4 +49,16 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             $CREATE_ISSUE_API \
-            -d '{"title":"Pipeline Failed","body":"Workflow failed.","labels":["bug"]}'
+            -d '{"title":"Pipeline Failed","body":"Tests failed.","labels":["bug"]}'
+
+  # =========================
+  # DEPLOY JOB
+  # =========================
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Step
+        run: |
+          echo "Deploying Application..."
