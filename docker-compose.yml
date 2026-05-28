@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  php-app:
+    build: .
+    container_name: php72_container
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: php index.php
