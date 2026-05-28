@@ -41,7 +41,7 @@ jobs:
           exit 1
 
       - name: Create GitHub Issue on Failure
-        if: failure()
+        # if: failure()
         run: |
           curl -L \
             -X POST \
