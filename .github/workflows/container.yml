@@ -19,7 +19,7 @@ jobs:
         run: docker compose up -d
 
       - name: Test
-        run: docker compose exec -T php72_container php index.php
+        run: docker compose exec -T php-app php index.php
 
       - name: Stop Containers
         run: docker compose down
